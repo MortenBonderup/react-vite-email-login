@@ -1,3 +1,5 @@
+// Kræver installation "npm install firebase"
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -8,12 +10,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCDwthIUrlRgTAt3giKJ37CUEOyRCfwJ3M",
-  authDomain: "react-auth-project-7bc29.firebaseapp.com",
-  projectId: "react-auth-project-7bc29",
-  storageBucket: "react-auth-project-7bc29.appspot.com",
-  messagingSenderId: "286530120024",
-  appId: "1:286530120024:web:112a5a21c2ab883b6f9d2d"
+  apiKey: "AIzaSyB6ScZtymKbjX8ZpXk00eTlZ_G5qGPM-04",
+  authDomain: "loginproj-2ef0d.firebaseapp.com",
+  projectId: "loginproj-2ef0d",
+  storageBucket: "loginproj-2ef0d.appspot.com",
+  messagingSenderId: "921133593576",
+  appId: "1:921133593576:web:e74032d30bd1b272122a5d"
 };
 
 // Initialize Firebase

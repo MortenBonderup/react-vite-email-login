@@ -4,8 +4,28 @@ import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import LoginPage from "./pages/LoginPage";
+import { useEffect } from "react";
+import { signOut } from "firebase/auth";
+import { auth } from './firebase-config';
 
 function App() {
+
+    // Sætter en eventlistener for at registrerer, når brugeren lukker
+    // browseren/fanebladet. Hvis det sker, logges brugeren ud.
+    useEffect(() => {
+        async function handleTabClose() {
+          await signOut(auth);
+        }
+    
+        // Sætter eventlistener
+        window.addEventListener('beforeunload', handleTabClose);
+    
+        // Fjerner eventlistener
+        return () => {
+          window.removeEventListener('beforeunload', handleTabClose);
+        };
+      }, []);
+
     return (
         <>
             <Nav />

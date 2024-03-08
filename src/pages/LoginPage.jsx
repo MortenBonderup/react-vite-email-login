@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { auth } from '../firebase-config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
 
@@ -10,14 +10,13 @@ export default function LoginPage() {
 
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    async function handleSubmit(e) {
         e.preventDefault();
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             console.log(userCredential);
             const user = userCredential.user;
-            localStorage.setItem('uid', user.accessToken);
-            localStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('user', user.email);
             navigate("/home");
         } catch (error) {
             console.error(error);
@@ -26,7 +25,7 @@ export default function LoginPage() {
 
     return (
         <div>
-            <h1 style={{ marginTop: "155px" }}>Login Page</h1>
+            <h1 style={{ marginTop: "155px" }}>Login side</h1>
             <form onSubmit={handleSubmit} className='login-form'>
                 <input
                     type="email"
@@ -34,6 +33,7 @@ export default function LoginPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    name="useremail"
                 />
                 <input
                     type="password"
@@ -41,10 +41,11 @@ export default function LoginPage() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    name="userpassword"
                 />
                 <button type="submit" className='login-button'>Login</button>
             </form>
-            <p>Need to Signup? <Link to="/">Create Account</Link></p>
+            
         </div>
     )
 }

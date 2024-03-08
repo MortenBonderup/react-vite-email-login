@@ -1,43 +1,35 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { db } from "../firebase-config";
+import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from '../firebase-config';
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
 
 export default function ContactPage() {
-    const [tekster, setTekster] = useState([]);
-    const [uid, setUid] = useState("");
-    const [user, setUser] = useState("");
+    const userInSession = sessionStorage.getItem('user');
+
+    const [user, loading] = useAuthState(auth);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        async function fetchData() {
-            const forespoergsel = query(collection(db, "tekst"), where("uid", "==", uid));
-            const querySnapshot = await getDocs(forespoergsel);
-            const docs = [];
-            querySnapshot.forEach((doc) => {
-                docs.push({ id: doc.id, ...doc.data() });
-            });
-            console.log("useEffect");
+            if (loading) return;
+            if (!user) return navigate("/login");
+    }, [user, loading, navigate]);
 
-            setTekster(docs);
+    async function handleLogout() {
+        try {
+            await signOut(auth);
+            sessionStorage.removeItem('user');
+            navigate("/login");
+        } catch (error) {
+            console.error(error);
         }
-        const tempUid = sessionStorage.getItem("uid");
-        const tempuser = JSON.parse(localStorage.getItem('user'));
-        setUser(tempuser);
-        setUid(tempUid);
-
-        fetchData();
-
-    }, [uid]);
+    }
 
     return (
-        <section className="page" style={{ marginTop: "25px" }}>
-            <p>Du er logget på som {user && user.email}</p>
-            {tekster.map(tekst => (
-                <p key={tekst.id}>
-                    {tekst.tekst}
-                    <br />--------------------------------------
-                </p>
-            ))}
-
+        <section className="page">
+            <h1>Kontaktside</h1>
+            <h2>Du er logget på som {userInSession && user.email}</h2>
+            <button onClick={handleLogout}>Logout</button>
         </section>
-    );
+    )
 }

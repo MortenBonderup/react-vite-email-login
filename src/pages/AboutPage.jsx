@@ -1,47 +1,36 @@
-import { addDoc, collection } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { db } from "../firebase-config";
+import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from '../firebase-config';
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
 
 export default function AboutPage() {
 
-    const [tekst, setTekst] = useState("");
-    const [uid, setUid] = useState("");
-    const [user, setUser] = useState("");
+    const userInSession = sessionStorage.getItem('user');
+
+    const [user, loading] = useAuthState(auth);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const tempUid = sessionStorage.getItem("uid");
-        const tempuser = JSON.parse(localStorage.getItem('user'));
-        setUid(tempUid);
-        setUser(tempuser);
-    }, []);
+            if (loading) return;
+            if (!user) return navigate("/login");
+    }, [user, loading, navigate]);
 
-    async function opretVare(e) {
-        e.preventDefault();
-
-        const nytekst = {
-            uid: uid,
-            tekst: tekst
-        }
-
+    async function handleLogout() {
         try {
-            const tekstRef = await addDoc(collection(db, "tekst"), nytekst);
-            console.log("Tekst tilføjet med ID: ", tekstRef.id);
-            alert("Tekst blev gemt!");
-        } catch (e) {
-            console.error("FEJL - Kunne ikke tilføje vare: ", e);
+            await signOut(auth);
+            sessionStorage.removeItem('user');
+            navigate("/login");
+        } catch (error) {
+            console.error(error);
         }
     }
 
-
     return (
         <section className="page">
-            <h1>Gem information</h1>
-            <p>Du er logget på som {user && user.email}</p>
-
-            <form onSubmit={opretVare}>
-                <textarea value={tekst} onChange={e => setTekst(e.target.value)}></textarea>
-                <button>Gem</button>
-            </form>
+            <h1>Om mig</h1>
+            <h2>Du er logget på som {userInSession && user.email}</h2>
+            <button onClick={handleLogout}>Logout</button>
         </section>
-    );
+    )
 }
