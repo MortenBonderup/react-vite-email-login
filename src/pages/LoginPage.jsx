@@ -17,7 +17,7 @@ export default function LoginPage() {
             console.log(userCredential);
             const user = userCredential.user;
             sessionStorage.setItem('user', user.email);
-            navigate("/home");
+            navigate("/admin1");
         } catch (error) {
             console.error(error);
         }

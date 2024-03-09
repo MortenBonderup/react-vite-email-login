@@ -4,7 +4,8 @@ import { auth } from '../firebase-config';
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 
-export default function ContactPage() {
+export default function Admin2Page() {
+
     const userInSession = sessionStorage.getItem('user');
 
     const [user, loading] = useAuthState(auth);
@@ -27,7 +28,7 @@ export default function ContactPage() {
 
     return (
         <section className="page">
-            <h1>Kontaktside</h1>
+            <h1>Admin2 side</h1>
             <h2>Du er logget på som {userInSession && user.email}</h2>
             <button onClick={handleLogout}>Logout</button>
         </section>

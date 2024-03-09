@@ -1,12 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Nav from "./components/Nav";
-import HomePage from "./pages/HomePage";
-import AboutPage from "./pages/AboutPage";
-import ContactPage from "./pages/ContactPage";
+import Admin1Side from "./pages/Admin1Page";
+import Admin2Side from "./pages/Admin2Page";
 import LoginPage from "./pages/LoginPage";
 import { useEffect } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from './firebase-config';
+import PizzaPlace from "./pages/PizzaPlace";
 
 function App() {
 
@@ -31,10 +31,10 @@ function App() {
             <Nav />
             <main>
                 <Routes>
-                    <Route path="/" element={<LoginPage />} />
-                    <Route path="/home" element={<HomePage />} />
-                    <Route path="/about" element={<AboutPage />} />
-                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/" element={<PizzaPlace />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/admin1" element={<Admin1Side />} />
+                    <Route path="/admin2" element={<Admin2Side />} />
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </main>
