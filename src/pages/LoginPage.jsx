@@ -19,7 +19,7 @@ export default function LoginPage() {
             sessionStorage.setItem('user', user.email);
             navigate("/admin1");
         } catch (error) {
-            console.error(error);
+            alert("Brugernavn eller adgangskode genkendes ikke! Prøv igen.")
         }
     }
 
